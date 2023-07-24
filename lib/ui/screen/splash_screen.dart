@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:task_manager/ui/assets_utils/assets_utils.dart';
-
+import 'package:task_manager/widgets/background_images.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,35 +32,17 @@ class _SplashScreenState extends State<SplashScreen> {
         body: SafeArea(
       child: Stack(
         children: [
-          SvgPicture.asset(
-            AssetUtils.background,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            fit: BoxFit.cover,
-          ),
-          Column(
-            children: [
-              const SizedBox(
-                height: 160,
-              ),
-              const Text(
-                "Welcome",
-                style: TextStyle(
-                    color: Colors.teal,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-              Image.asset(
-                AssetUtils.splashLogo,
-                height: 170,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ],
+          ScreenBackGround(
+              child:  Center(
+                child: Image.asset(
+                  AssetUtils.splashLogo,
+                  height: 170,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              )
           )
+
         ],
       ),
     ));
