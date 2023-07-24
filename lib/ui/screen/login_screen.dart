@@ -45,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     TextFormField(
                       controller: _passwordEditingController,
+                      obscureText: true,
                       decoration: const InputDecoration(
                         hintText: "Enter your password",
                         prefixIcon: Icon(Icons.lock_clock_outlined),

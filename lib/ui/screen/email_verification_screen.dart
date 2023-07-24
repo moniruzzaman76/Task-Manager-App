@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:task_manager/ui/screen/pin_verification_screen.dart';
 import '../../widgets/background_images.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
@@ -50,7 +49,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>PinVerificationScreen()));
+                          },
                           child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
                       ),
                     ),
