@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screen/email_verification_screen.dart';
+import 'package:task_manager/ui/screen/registration_screen.dart';
 import '../../widgets/background_images.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -58,8 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                        width: double.infinity,
                       child: ElevatedButton(
                           onPressed: (){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>const EmailVerificationScreen()));
+
                           },
                           child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
                       ),
@@ -69,7 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     TextButton(
                       onPressed: (){
-
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (context)=>const EmailVerificationScreen()));
                       },
                       child: const Text("Forgot Password ?",style: TextStyle(
                       color: Colors.blueGrey,
@@ -88,7 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                letterSpacing: 0.5
                             ),),
 
-                        TextButton(onPressed: (){},
+                        TextButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context)=>const RegistrationScreen()));
+                        },
                             child: const Text("Sing up",style: TextStyle(
                               fontSize: 18,
                             ),),
