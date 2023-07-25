@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/ui/screen/bottom_nab_bar_screen.dart';
 import 'package:task_manager/ui/screen/email_verification_screen.dart';
 import 'package:task_manager/ui/screen/registration_screen.dart';
 import '../../widgets/background_images.dart';
@@ -59,7 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
                        width: double.infinity,
                       child: ElevatedButton(
                           onPressed: (){
-
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context)=>const BottomNabBarScreen()));
                           },
                           child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
                       ),
