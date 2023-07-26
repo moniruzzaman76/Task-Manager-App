@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import '../../widgets/list_tile_task.dart';
+import '../../widgets/user_profile_banar.dart';
 
 class CancelScreen extends StatefulWidget {
   const CancelScreen({Key? key}) : super(key: key);
@@ -10,6 +12,15 @@ class CancelScreen extends StatefulWidget {
 class _CancelScreenState extends State<CancelScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            UserProfileBanner(),
+             ListTileTask(),
+          ],
+        ),
+      ),
+    );
   }
 }
