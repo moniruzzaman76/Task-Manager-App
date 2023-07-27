@@ -46,7 +46,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                 ),
               ],
             ),
-            ListTileTask(),
+            const ListTileTask(text:"New",color: Colors.blue,),
           ],
         ),
       ),

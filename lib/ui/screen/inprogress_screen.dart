@@ -24,7 +24,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
               } ,
                 child: const UserProfileBanner(),
             ),
-            const ListTileTask(),
+            const ListTileTask(text: "InProgress",color:Colors.red),
           ],
         ),
       ),

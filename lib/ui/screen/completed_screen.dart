@@ -17,7 +17,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
         child: Column(
           children: [
             UserProfileBanner(),
-            ListTileTask(),
+            ListTileTask(text: "Completed",color: Colors.pink,),
           ],
         ),
       ),

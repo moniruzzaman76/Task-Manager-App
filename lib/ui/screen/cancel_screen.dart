@@ -17,7 +17,10 @@ class _CancelScreenState extends State<CancelScreen> {
         child: Column(
           children: [
             UserProfileBanner(),
-             ListTileTask(),
+             ListTileTask(
+               text: "Cancel",
+               color: Colors.green,
+             ),
           ],
         ),
       ),

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class ListTileTask extends StatelessWidget {
   const ListTileTask({
-    super.key,
+    super.key, required this.color, required this.text,
   });
+
+  final Color color;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +28,12 @@ class ListTileTask extends StatelessWidget {
                       const SizedBox(height:15,),
                       Row(
                         children: [
-                          const Chip(
-                            label: Text("new",style: TextStyle(
+                           Chip(
+                            label: const Text("new",style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
                             ),),
-                            backgroundColor: Colors.blue,
+                            backgroundColor: color,
                           ),
                           const Spacer(),
                           IconButton(onPressed: (){}, icon: const Icon(Icons.edit,color: Colors.green,)),
