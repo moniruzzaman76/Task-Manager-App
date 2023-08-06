@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/Utils/urls.dart';
+import 'package:task_manager/data/model/network_response.dart';
+import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/ui/screen/bottom_nab_bar_screen.dart';
 import 'package:task_manager/ui/screen/email_verification_screen.dart';
 import 'package:task_manager/ui/screen/registration_screen.dart';
@@ -17,6 +20,47 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordEditingController = TextEditingController();
 
    final _formKey = GlobalKey<FormState>();
+
+   bool _singInProgress = false;
+   
+   Future<void>userSingIn()async{
+     _singInProgress = true;
+     if(mounted){
+       setState(() {});
+     }
+     final NetworkResponse response = await NetWorkCaller().postRequest(Urls.login,<String,dynamic>{
+     "email":_emailEditingController.text.trim(),
+     "password":_passwordEditingController.text,
+     });
+
+     _singInProgress = false;
+     if(mounted){
+       setState(() {});
+     }
+
+     if(response.isSuccess){
+       _emailEditingController.clear();
+       _passwordEditingController.clear();
+
+       if(mounted){
+         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+             builder: (context)=>const BottomNabBarScreen()),
+                 (route) => false);
+
+         ScaffoldMessenger.of(context).showSnackBar(
+             const SnackBar(backgroundColor: Colors.green,content: Text("Login Successful!")));
+       }
+     }else{
+       if(mounted){
+         ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(backgroundColor: Colors.red, content: Text("Login fail!")));
+       }
+       _singInProgress = false;
+       if(mounted){
+         setState(() {});
+       }
+     }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -74,18 +118,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       SizedBox(
                          width: double.infinity,
-                        child: ElevatedButton(
-                            onPressed: (){
+                        child: Visibility(
+                          visible: _singInProgress == false,
+                          replacement: const Center(child: CircularProgressIndicator()),
+                          child: ElevatedButton(
+                              onPressed: (){
+                                if(_formKey.currentState!.validate()){
 
-                              if(_formKey.currentState!.validate()){
+                                  userSingIn();
 
-                                Navigator.push(context,
-                                    MaterialPageRoute(
-                                        builder: (context)=>const BottomNabBarScreen()));
-
-                              }
-                            },
-                            child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                                }
+                              },
+                              child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                          ),
                         ),
                       ),
 

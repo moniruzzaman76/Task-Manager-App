@@ -44,9 +44,9 @@ class _BottomNabBarScreenState extends State<BottomNabBarScreen> {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.ac_unit,),label: "New Task",),
-          BottomNavigationBarItem(icon: Icon(Icons.account_tree_outlined,),label: "In Progress",),
           BottomNavigationBarItem(icon: Icon(Icons.done_all,),label: "Completed",),
           BottomNavigationBarItem(icon: Icon(Icons.cancel_outlined,),label: "Cancel",),
+          BottomNavigationBarItem(icon: Icon(Icons.account_tree_outlined,),label: "In Progress",),
         ],
       ),
 
