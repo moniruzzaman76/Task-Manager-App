@@ -23,6 +23,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool _signUpInProgress = false;
+  bool _isHiddenPassword = true;
 
   Future<void>userSingUp()async{
 
@@ -166,16 +167,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                       TextFormField(
                         validator: (value){
-                          if(value==null || value.isEmpty || value.length <= 5 ){
-                            return "Enter a password more than 6 latter";
+                          if(value==null || value.isEmpty || value.length <= 5){
+                            return "Enter your password";
                           }
                           return null;
                         },
                         controller: _passwordEditingController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: "Enter your password",
-                          prefixIcon: Icon(Icons.lock_clock_outlined),
+                        obscureText: _isHiddenPassword,
+                        decoration: InputDecoration(
+                            hintText: "Enter your password",
+                            prefixIcon: const Icon(Icons.lock_clock_outlined),
+                            suffixIcon: InkWell(
+                              onTap: (){
+                                _isHiddenPassword =! _isHiddenPassword;
+                                setState(() {});
+                              },
+                              child: _isHiddenPassword == true ?
+                              const Icon(Icons.visibility_off):const Icon(Icons.visibility),
+                            )
                         ),
                       ),
 

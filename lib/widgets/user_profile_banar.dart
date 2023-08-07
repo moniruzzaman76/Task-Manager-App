@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/model/auth_utility.dart';
 
 class UserProfileBanner extends StatelessWidget {
   const UserProfileBanner({
@@ -7,18 +8,23 @@ class UserProfileBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListTile(
+    return  ListTile(
 
       tileColor: Colors.green,
-      leading:CircleAvatar(
-        backgroundImage: NetworkImage("https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80",scale:1),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(AuthUtility.userInfo.data?.photo ?? "",scale:1),
         radius: 25,
+        onBackgroundImageError: (object, stackTrace){
+           const Icon(Icons.image);
+        },
       ),
-      title: Text("User Name",style: TextStyle(
+      title: Text(
+        "${AuthUtility.userInfo.data?.firstName ?? ""} ${AuthUtility.userInfo.data?.lastName ?? ""}",
+        style: const TextStyle(
         color: Colors.white,
         fontSize: 15,
       ),),
-      subtitle: Text("Email",style: TextStyle(
+      subtitle:  Text(AuthUtility.userInfo.data?.email ?? "",style: const TextStyle(
         color: Colors.white,
         fontSize: 13,
       ),),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/Utils/urls.dart';
+import 'package:task_manager/data/model/auth_utility.dart';
+import 'package:task_manager/data/model/login_model.dart';
 import 'package:task_manager/data/model/network_response.dart';
 import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/ui/screen/bottom_nab_bar_screen.dart';
@@ -21,8 +23,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
    final _formKey = GlobalKey<FormState>();
 
+   bool isHiddenPassword = true;
+
    bool _singInProgress = false;
-   
+
+
    Future<void>userSingIn()async{
      _singInProgress = true;
      if(mounted){
@@ -41,6 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
      if(response.isSuccess){
        _emailEditingController.clear();
        _passwordEditingController.clear();
+
+       LoginModel model = LoginModel.fromJson(response.body!);
+       await AuthUtility.saveUserInfo(model);
 
        if(mounted){
          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -102,15 +110,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextFormField(
                         validator: (value){
                           if(value==null || value.isEmpty){
-                            return "Enter Your Email Address";
+                            return "please Enter your password";
                           }
                           return null;
                         },
                         controller: _passwordEditingController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
+                        obscureText: isHiddenPassword,
+                        decoration: InputDecoration(
                           hintText: "Enter your password",
-                          prefixIcon: Icon(Icons.lock_clock_outlined),
+                          prefixIcon: const Icon(Icons.lock_clock_outlined),
+                          suffixIcon: InkWell(
+                            onTap: (){
+                               isHiddenPassword =! isHiddenPassword;
+                              setState(() {});
+                            },
+                              child: isHiddenPassword == true ?
+                              const Icon(Icons.visibility_off):const Icon(Icons.visibility),
+                          )
                         ),
                       ),
 
