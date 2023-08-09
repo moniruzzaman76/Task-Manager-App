@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/model/new_task_list_model.dart';
+import '../../data/Utils/urls.dart';
+import '../../data/service/network_coller.dart';
+import '../../data/service/network_response.dart';
 import '../../widgets/list_tile_task.dart';
 import '../../widgets/user_profile_banar.dart';
 
@@ -10,14 +14,78 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
+  
+  
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) { 
+      getCompletedTaskList();
+    });
+  }
+  
+  bool _completedTaskInProgress = false;
+  NewTaskListModel _newTaskListModel = NewTaskListModel();
+
+  Future<void>getCompletedTaskList()async{
+
+    _completedTaskInProgress = true;
+    if(mounted){
+      setState(() {});
+
+      final NetworkResponse response = await NetWorkCaller().getRequest(Urls.newTaskList);
+
+      _completedTaskInProgress = false;
+      if(mounted){
+        setState(() {});
+      }
+      if(response.isSuccess){
+        _newTaskListModel = NewTaskListModel.fromJson(response.body!);
+      }else{
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("New Task data failed!")));
+        }
+      }
+    }
+  }
+  
+  
+  
+  
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            UserProfileBanner(),
-            ListTileTask(text: "Complete",color: Colors.pink,),
+            const UserProfileBanner(),
+
+            Expanded(
+                child: RefreshIndicator(
+                  onRefresh: ()async{
+                    await getCompletedTaskList();
+                  },
+                  child: Visibility(
+                    visible: !_completedTaskInProgress,
+                    replacement: const Center(child: CircularProgressIndicator()),
+                    child: ListView.separated(
+                      itemCount: _newTaskListModel.data?.length ?? 0,
+                      itemBuilder: (context,index){
+                        return  ListTileTask(
+                          data: _newTaskListModel.data![index] ,color: Colors.green,);
+                      },
+                      separatorBuilder: (context,index){
+                        return const Divider(
+                          height: 4,
+                          thickness: 1,
+                        );
+                      },
+
+                    ),
+                  ),
+                )
+            )
           ],
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/data/Utils/urls.dart';
 import 'package:task_manager/data/model/auth_utility.dart';
 import 'package:task_manager/data/model/login_model.dart';
-import 'package:task_manager/data/model/network_response.dart';
+import 'package:task_manager/data/service/network_response.dart';
 import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/ui/screen/bottom_nab_bar_screen.dart';
 import 'package:task_manager/ui/screen/email_verification_screen.dart';
@@ -29,14 +29,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
    Future<void>userSingIn()async{
+
      _singInProgress = true;
      if(mounted){
        setState(() {});
      }
-     final NetworkResponse response = await NetWorkCaller().postRequest(Urls.login,<String,dynamic>{
-     "email":_emailEditingController.text.trim(),
-     "password":_passwordEditingController.text,
-     });
+
+     Map<String,dynamic>requestBody = {
+       "email":_emailEditingController.text.trim(),
+       "password":_passwordEditingController.text,
+     };
+
+     final NetworkResponse response = await NetWorkCaller().postRequest(
+         Urls.login,requestBody,isLogin: true);
 
      _singInProgress = false;
      if(mounted){

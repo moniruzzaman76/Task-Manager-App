@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screen/update_profile_screen.dart';
-import '../../widgets/list_tile_task.dart';
 import '../../widgets/user_profile_banar.dart';
 
 class InProgressScreen extends StatefulWidget {
@@ -24,7 +23,22 @@ class _InProgressScreenState extends State<InProgressScreen> {
               } ,
                 child: const UserProfileBanner(),
             ),
-            const ListTileTask(text: "In Progress",color:Colors.red),
+            Expanded(
+                child: ListView.separated(
+                  itemCount: 10,
+                  itemBuilder: (context,index){
+                    return const SizedBox();
+                    // return  ListTileTask(data: ,color: Colors.green,);
+                  },
+                  separatorBuilder: (context,index){
+                    return const Divider(
+                      height: 4,
+                      thickness: 1,
+                    );
+                  },
+
+                )
+            )
           ],
         ),
       ),

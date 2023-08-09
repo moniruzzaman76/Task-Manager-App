@@ -9,7 +9,8 @@ class SummeryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Expanded(
+    return  SizedBox(
+      width: 90,
       child: Card(
         elevation: 4,
         color: Colors.blueGrey[200],
@@ -18,10 +19,10 @@ class SummeryCard extends StatelessWidget {
           child: Column(
             children: [
               Text(count,style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 26,
                   fontWeight: FontWeight.w600
               ),),
-              Text(title),
+              Text(title,style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),),
             ],
           ),
         ),
