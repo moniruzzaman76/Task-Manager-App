@@ -33,7 +33,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
     if(mounted){
       setState(() {});
 
-      final NetworkResponse response = await NetWorkCaller().getRequest(Urls.newTaskList);
+      final NetworkResponse response = await NetWorkCaller().getRequest(Urls.completedTaskList);
 
       _completedTaskInProgress = false;
       if(mounted){
@@ -44,7 +44,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
       }else{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("New Task data failed!")));
+              const SnackBar(
+                backgroundColor: Colors.red,
+                  content: Text("completed Task get failed!")));
         }
       }
     }
@@ -73,6 +75,8 @@ class _CompletedScreenState extends State<CompletedScreen> {
                       itemCount: _newTaskListModel.data?.length ?? 0,
                       itemBuilder: (context,index){
                         return  ListTileTask(
+                          onDeleteTap: (){},
+                          onEditTap: (){},
                           data: _newTaskListModel.data![index] ,color: Colors.green,);
                       },
                       separatorBuilder: (context,index){

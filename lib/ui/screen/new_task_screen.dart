@@ -18,7 +18,6 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
-
   SummeryCountModel _summeryCountModel = SummeryCountModel();
   NewTaskListModel _newTaskListModel = NewTaskListModel();
 
@@ -30,71 +29,86 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getSummeryCount();
       getNewTaskList();
-
     });
   }
 
-  
-  Future<void>getSummeryCount()async{
-    
-    _summeryCountInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
+  Future<void> deleteTask(taskId) async {
+    final NetworkResponse response =
+        await NetWorkCaller().getRequest(Urls.deleteTask(taskId));
+    if (response.isSuccess) {
 
-    final NetworkResponse response = await NetWorkCaller().getRequest(Urls.taskStatusCount);
-    _summeryCountInProgress = false;
-    if(mounted){
-      setState(() {});
-    }
-
-    if(response.isSuccess){
-     _summeryCountModel = SummeryCountModel.fromJson(response.body!);
-    }else{
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("summery data get failed!")));
+       _newTaskListModel.data?.removeWhere((element) => element.sId == taskId);
+      // getNewTaskList();
+      // getSummeryCount();
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red, content: Text("Task delete failed!")));
       }
     }
   }
 
+  Future<void> getSummeryCount() async {
+    _summeryCountInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
 
-  Future<void>getNewTaskList()async{
+    final NetworkResponse response =
+        await NetWorkCaller().getRequest(Urls.taskStatusCount);
+    _summeryCountInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
 
+    if (response.isSuccess) {
+      _summeryCountModel = SummeryCountModel.fromJson(response.body!);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("summery data get failed!")));
+      }
+    }
+  }
+
+  Future<void> getNewTaskList() async {
     _addNewTaskInProgress = true;
-    if(mounted){
+    if (mounted) {
       setState(() {});
 
-      final NetworkResponse response = await NetWorkCaller().getRequest(Urls.newTaskList);
+      final NetworkResponse response =
+          await NetWorkCaller().getRequest(Urls.newTaskList);
 
       _addNewTaskInProgress = false;
-      if(mounted){
+      if (mounted) {
         setState(() {});
       }
-      if(response.isSuccess){
+      if (response.isSuccess) {
         _newTaskListModel = NewTaskListModel.fromJson(response.body!);
-      }else{
-        if(mounted){
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("New Task data failed!")));
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("New Task data failed!")));
         }
       }
     }
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context)=>const UpdateProfileScreen()));
-              } ,
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UpdateProfileScreen()));
+              },
               child: const UserProfileBanner(),
             ),
 
@@ -124,7 +138,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
             // ),
             Visibility(
               visible: !_summeryCountInProgress,
-              replacement:const LinearProgressIndicator(),
+              replacement: const LinearProgressIndicator(),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -133,71 +147,104 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: _summeryCountModel.data?.length ?? 0,
-                    itemBuilder: (context,index){
+                    itemBuilder: (context, index) {
                       return SummeryCard(
                         count: _summeryCountModel.data![index].sum.toString(),
                         title: _summeryCountModel.data![index].sId ?? "New",
                       );
                     },
-                    separatorBuilder: (context,index){
+                    separatorBuilder: (context, index) {
                       return const Divider(
                         height: 4,
                         thickness: 1,
                       );
                     },
-
                   ),
                 ),
               ),
             ),
 
-
             Expanded(
                 child: RefreshIndicator(
-                  color: Colors.red,
-                  backgroundColor: Colors.white70,
-                  onRefresh: () async {
-                    getNewTaskList();
-                  },
-                  child: Visibility(
-                    visible: _addNewTaskInProgress == false,
-                    replacement: const Center(child: CircularProgressIndicator(),),
-                    child: ListView.separated(
-            itemCount: _newTaskListModel.data?.length ?? 0,
-            itemBuilder: (context,index){
-
-              return  ListTileTask(
-                data:_newTaskListModel.data![index],
-                color: Colors.green,
-              );
+              color: Colors.red,
+              backgroundColor: Colors.white70,
+              onRefresh: () async {
+                getNewTaskList();
+                getSummeryCount();
               },
-            separatorBuilder: (context,index){
-              return const Divider(
-                    height: 4,
-                    thickness: 1,
-              );
-            },
-
-          ),
-                  ),
-                )
-      )
+              child: Visibility(
+                visible: _addNewTaskInProgress == false,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ListView.separated(
+                  itemCount: _newTaskListModel.data?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    return ListTileTask(
+                      data: _newTaskListModel.data![index],
+                      onDeleteTap: () {
+                        _showDeleteDialog(index);
+                        // deleteTask(_newTaskListModel.data![index].sId);
+                      },
+                      onEditTap: () {},
+                      color: Colors.green,
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider(
+                      height: 4,
+                      thickness: 1,
+                    );
+                  },
+                ),
+              ),
+            ))
 
             // const ListTileTask(text:"New",color: Colors.blue,),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed:(){
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context)=>const CreateNewTaskScreen()));
-          },
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CreateNewTaskScreen()));
+        },
         child: const Icon(Icons.add),
       ),
     );
   }
+
+  void _showDeleteDialog(index){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Center(
+            child: Text("Delete!",style: TextStyle(color:Colors.red),)),
+        content: const Text("You want to delete task?",style:TextStyle(
+          fontSize: 22,
+        ),),
+        actions: [
+          Row(
+            children: [
+              TextButton(
+                  onPressed: (){
+                    getNewTaskList();
+                    deleteTask(_newTaskListModel.data![index].sId);
+                    Navigator.pop(context);
+                    if(mounted){
+                      setState(() {});
+                    }
+              }, child: const Text("yes")),
+              const Spacer(),
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: const Text("NO")),
+
+            ],
+          )
+        ],
+      );
+    });
+  }
 }
-
-
-
-

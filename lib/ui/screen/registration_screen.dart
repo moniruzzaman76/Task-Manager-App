@@ -167,7 +167,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                       TextFormField(
                         validator: (value){
-                          if(value==null || value.isEmpty || value.length <= 5){
+                          if(value==null || value.isEmpty){
+                            // || value.length <= 5
                             return "Enter your password";
                           }
                           return null;

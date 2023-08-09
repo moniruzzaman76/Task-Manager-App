@@ -13,7 +13,7 @@ class SummeryCard extends StatelessWidget {
       width: 90,
       child: Card(
         elevation: 4,
-        color: Colors.blueGrey[200],
+        color: Colors.blueGrey[100],
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
