@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/model/new_task_list_model.dart';
+import 'package:task_manager/data/model/task_list_model.dart';
 
 class ListTileTask extends StatelessWidget {
   const ListTileTask({

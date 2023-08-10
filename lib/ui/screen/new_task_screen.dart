@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/Utils/urls.dart';
-import 'package:task_manager/data/model/new_task_list_model.dart';
+import 'package:task_manager/data/model/task_list_model.dart';
 import 'package:task_manager/data/model/summery_count_model.dart';
 import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/data/service/network_response.dart';
@@ -19,7 +19,7 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   SummeryCountModel _summeryCountModel = SummeryCountModel();
-  NewTaskListModel _newTaskListModel = NewTaskListModel();
+  TaskListModel _taskListModel = TaskListModel();
 
   bool _summeryCountInProgress = false, _addNewTaskInProgress = false;
 
@@ -37,7 +37,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         await NetWorkCaller().getRequest(Urls.deleteTask(taskId));
     if (response.isSuccess) {
 
-       _newTaskListModel.data?.removeWhere((element) => element.sId == taskId);
+       _taskListModel.data?.removeWhere((element) => element.sId == taskId);
       // getNewTaskList();
       // getSummeryCount();
     } else {
@@ -85,7 +85,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         setState(() {});
       }
       if (response.isSuccess) {
-        _newTaskListModel = NewTaskListModel.fromJson(response.body!);
+        _taskListModel = TaskListModel.fromJson(response.body!);
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -178,10 +178,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.separated(
-                  itemCount: _newTaskListModel.data?.length ?? 0,
+                  itemCount: _taskListModel.data?.length ?? 0,
                   itemBuilder: (context, index) {
                     return ListTileTask(
-                      data: _newTaskListModel.data![index],
+                      data: _taskListModel.data![index],
                       onDeleteTap: () {
                         _showDeleteDialog(index);
                         // deleteTask(_newTaskListModel.data![index].sId);
@@ -230,7 +230,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               TextButton(
                   onPressed: (){
                     getNewTaskList();
-                    deleteTask(_newTaskListModel.data![index].sId);
+                    deleteTask(_taskListModel.data![index].sId);
                     Navigator.pop(context);
                     if(mounted){
                       setState(() {});

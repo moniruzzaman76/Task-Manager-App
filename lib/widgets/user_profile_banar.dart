@@ -15,7 +15,6 @@ class _UserProfileBannerState extends State<UserProfileBanner> {
   @override
   Widget build(BuildContext context) {
     return  ListTile(
-
       tileColor: Colors.green,
       leading: CircleAvatar(
         backgroundImage: NetworkImage(AuthUtility.userInfo.data?.photo ?? "",scale:1),

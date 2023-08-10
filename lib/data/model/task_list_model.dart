@@ -1,10 +1,10 @@
-class NewTaskListModel {
+class TaskListModel {
   String? status;
   List<TaskData>? data;
 
-  NewTaskListModel({this.status, this.data});
+  TaskListModel({this.status, this.data});
 
-  NewTaskListModel.fromJson(Map<String, dynamic> json) {
+  TaskListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       data = <TaskData>[];

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/model/new_task_list_model.dart';
+import 'package:task_manager/data/model/task_list_model.dart';
 import '../../data/Utils/urls.dart';
 import '../../data/service/network_coller.dart';
 import '../../data/service/network_response.dart';
@@ -25,7 +25,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
   }
   
   bool _completedTaskInProgress = false;
-  NewTaskListModel _newTaskListModel = NewTaskListModel();
+  TaskListModel _taskListModel = TaskListModel();
 
   Future<void>getCompletedTaskList()async{
 
@@ -40,7 +40,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
         setState(() {});
       }
       if(response.isSuccess){
-        _newTaskListModel = NewTaskListModel.fromJson(response.body!);
+        _taskListModel = TaskListModel.fromJson(response.body!);
       }else{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
@@ -72,12 +72,13 @@ class _CompletedScreenState extends State<CompletedScreen> {
                     visible: !_completedTaskInProgress,
                     replacement: const Center(child: CircularProgressIndicator()),
                     child: ListView.separated(
-                      itemCount: _newTaskListModel.data?.length ?? 0,
+                      itemCount: _taskListModel.data?.length ?? 0,
                       itemBuilder: (context,index){
                         return  ListTileTask(
                           onDeleteTap: (){},
                           onEditTap: (){},
-                          data: _newTaskListModel.data![index] ,color: Colors.green,);
+                          data: _taskListModel.data![index],
+                          color: Colors.green,);
                       },
                       separatorBuilder: (context,index){
                         return const Divider(
