@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/data/Utils/urls.dart';
 import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/data/service/network_response.dart';
-import 'package:task_manager/ui/screen/otp_verification_screen.dart';
+import 'package:task_manager/ui/auth/otp_verification_screen.dart';
 import '../../widgets/background_images.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
          if (mounted) {
            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-               backgroundColor: Colors.green, content: Text(" Email verify failed!")));
+               backgroundColor: Colors.green, content: Text(" Email verify successful!")));
          }
        }
 

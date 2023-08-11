@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screen/Reset_password_screen.dart';
-import 'package:task_manager/ui/screen/login_screen.dart';
+import 'package:task_manager/ui/auth/Reset_password_screen.dart';
+import 'package:task_manager/ui/auth/login_screen.dart';
 import '../../data/Utils/urls.dart';
 import '../../data/service/network_coller.dart';
 import '../../data/service/network_response.dart';

@@ -3,7 +3,7 @@ import 'package:task_manager/data/model/auth_utility.dart';
 import 'package:task_manager/ui/assets_utils/assets_utils.dart';
 import 'package:task_manager/widgets/background_images.dart';
 import 'bottom_nab_bar_screen.dart';
-import 'login_screen.dart';
+import '../auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

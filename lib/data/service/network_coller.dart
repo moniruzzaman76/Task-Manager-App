@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:task_manager/app.dart';
 import 'package:task_manager/data/model/auth_utility.dart';
 import 'package:task_manager/data/service/network_response.dart';
-import 'package:task_manager/ui/screen/login_screen.dart';
+import 'package:task_manager/ui/auth/login_screen.dart';
 
 
 class NetWorkCaller{

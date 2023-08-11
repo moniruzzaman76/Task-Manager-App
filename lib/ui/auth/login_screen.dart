@@ -5,8 +5,8 @@ import 'package:task_manager/data/model/login_model.dart';
 import 'package:task_manager/data/service/network_response.dart';
 import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/ui/screen/bottom_nab_bar_screen.dart';
-import 'package:task_manager/ui/screen/email_verification_screen.dart';
-import 'package:task_manager/ui/screen/registration_screen.dart';
+import 'package:task_manager/ui/auth/email_verification_screen.dart';
+import 'package:task_manager/ui/auth/registration_screen.dart';
 import '../../widgets/background_images.dart';
 
 class LoginScreen extends StatefulWidget {
