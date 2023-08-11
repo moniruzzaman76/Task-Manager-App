@@ -43,12 +43,10 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
     if(response.isSuccess){
       if(mounted){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context)=> ResetPasswordScreen(email:widget.email, otp:_otpVerifyController.text.trim() )));
+            builder: (context)=> ResetPasswordScreen(email:widget.email, otp:_otpVerifyController.text )));
 
-        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.green, content: Text("otp verify successfully")));
-        }
       }
     }else{
       if (mounted) {
