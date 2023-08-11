@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/Utils/urls.dart';
+import 'package:task_manager/data/service/network_coller.dart';
+import 'package:task_manager/data/service/network_response.dart';
 import 'package:task_manager/ui/screen/pin_verification_screen.dart';
 import '../../widgets/background_images.dart';
 
@@ -13,6 +16,44 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   final TextEditingController _emailEditingController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
+   bool emailVerificationInProgress = false;
+
+
+  Future<void> emailVerification() async{
+    emailVerificationInProgress = true;
+    if(mounted){
+      setState(() {});
+    }
+    final NetworkResponse response = await NetWorkCaller().getRequest(
+        Urls.emailVerification(_emailEditingController.text.trim()));
+    emailVerificationInProgress = false;
+    if(mounted){
+      setState(() {});
+    }
+     if(response.isSuccess){
+       if(mounted){
+         Navigator.push(context, MaterialPageRoute(
+             builder: (context)=> PinVerificationScreen(email: _emailEditingController.text,)));
+
+         if (mounted) {
+           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+               backgroundColor: Colors.green, content: Text(" Email verify failed!")));
+         }
+       }
+
+     }else{
+       if (mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+             backgroundColor: Colors.red, content: Text(" Email verify failed!")));
+       }
+
+     }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,62 +62,77 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 100,),
-                    Text("Your Email Address",
-                      style: Theme.of(context).textTheme.titleLarge,),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 100,),
+                      Text("Your Email Address",
+                        style: Theme.of(context).textTheme.titleLarge,),
 
-                    const SizedBox(height:6,),
+                      const SizedBox(height:6,),
 
-                    Text("A 6 digit verification pin will sent on your email address",
-                      style: Theme.of(context).textTheme.bodyMedium,),
-                    const SizedBox(height: 20,),
+                      Text("A 6 digit verification pin will sent on your email address",
+                        style: Theme.of(context).textTheme.bodyMedium,),
+                      const SizedBox(height: 20,),
 
-                    TextFormField(
-                      controller: _emailEditingController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        hintText: "Enter your email",
-                        prefixIcon: Icon(Icons.email_outlined),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20,),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>PinVerificationScreen()));
-                          },
-                          child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
-                      ),
-                    ),
-
-                    const SizedBox(height: 20,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Don't have account?",style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.5
-                        ),),
-
-                        TextButton(onPressed: (){
-                          Navigator.pop(context);
+                      TextFormField(
+                        validator: (value){
+                          if(value==null|| value.isEmpty){
+                            return " Please Enter your email";
+                          }
+                          return null;
                         },
-                          child: const Text("Sing In",style: TextStyle(
-                            fontSize: 18,
+                        controller: _emailEditingController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          hintText: "Enter your email",
+                          prefixIcon: Icon(Icons.email_outlined),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20,),
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: Visibility(
+                          visible: !emailVerificationInProgress,
+                          replacement: const Center(child: CircularProgressIndicator(),),
+                          child: ElevatedButton(
+                              onPressed: (){
+                                if(_formKey.currentState!.validate()){
+                                  emailVerification();
+                                }
+                              },
+                              child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don't have account?",style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.5
                           ),),
-                        )
-                      ],
-                    )
-                  ],
+
+                          TextButton(onPressed: (){
+                            Navigator.pop(context);
+                          },
+                            child: const Text("Sing In",style: TextStyle(
+                              fontSize: 18,
+                            ),),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
