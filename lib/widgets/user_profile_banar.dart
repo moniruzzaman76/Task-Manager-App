@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/model/auth_utility.dart';
 import 'package:task_manager/ui/screen/login_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class UserProfileBanner extends StatefulWidget {
   const UserProfileBanner({
@@ -15,14 +16,14 @@ class _UserProfileBannerState extends State<UserProfileBanner> {
   @override
   Widget build(BuildContext context) {
     return  ListTile(
-      tileColor: Colors.green,
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(AuthUtility.userInfo.data?.photo ?? "",scale:1),
-        radius: 25,
-        onBackgroundImageError: (object, stackTrace){
-           const Icon(Icons.image);
-        },
+       tileColor: Colors.green,
+      // using CachedNetworkImage package
+      leading: CachedNetworkImage(
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        imageUrl: AuthUtility.userInfo.data?.photo ?? "",
+        errorWidget: (context, url, error) => const Icon(Icons.person,size: 45,),
       ),
+
       title: Text(
         "${AuthUtility.userInfo.data?.firstName ?? ""} ${AuthUtility.userInfo.data?.lastName ?? ""}",
         style: const TextStyle(

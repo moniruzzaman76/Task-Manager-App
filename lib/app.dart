@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screen/splash_screen.dart';
 
 class MyApp extends StatefulWidget {
-  static GlobalKey globalKey = GlobalKey();
+  static GlobalKey<NavigatorState> globalKey = GlobalKey<NavigatorState>();
   const MyApp({super.key});
 
   @override
@@ -14,7 +14,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        key: MyApp.globalKey,
+        navigatorKey: MyApp.globalKey,
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
         theme: ThemeData(

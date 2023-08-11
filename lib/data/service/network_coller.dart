@@ -34,7 +34,8 @@ class NetWorkCaller{
   }
 
 
-  Future<NetworkResponse>postRequest(String url,Map<String,dynamic>body,{bool isLogin = false} )async{
+  Future<NetworkResponse>postRequest(String url,Map<String,dynamic>body, {bool isLogin = false} )async{
+    log(body.toString());
     Response response = await post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json',"token": AuthUtility.userInfo.token.toString()},
@@ -47,7 +48,7 @@ class NetWorkCaller{
         return NetworkResponse(true, response.statusCode, jsonDecode(response.body));
       }
       else if(response.statusCode == 401){
-        if(isLogin){
+        if(isLogin == false){
           gotoLogin();
         }
       }

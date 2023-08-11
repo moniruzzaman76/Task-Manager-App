@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/model/task_list_model.dart';
+import 'package:task_manager/ui/screen/update_profile_screen.dart';
 import '../../data/Utils/urls.dart';
 import '../../data/service/network_coller.dart';
 import '../../data/service/network_response.dart';
@@ -61,7 +62,13 @@ class _CompletedScreenState extends State<CompletedScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const UserProfileBanner(),
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=>const UpdateProfileScreen()));
+              },
+                child: const UserProfileBanner()
+            ),
 
             Expanded(
                 child: RefreshIndicator(

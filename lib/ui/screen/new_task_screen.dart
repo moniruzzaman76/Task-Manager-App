@@ -136,6 +136,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
             //     ],
             //   ),
             // ),
+
             Visibility(
               visible: !_summeryCountInProgress,
               replacement: const LinearProgressIndicator(),
@@ -221,7 +222,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       return AlertDialog(
         title: const Center(
             child: Text("Delete!",style: TextStyle(color:Colors.red),)),
-        content: const Text("You want to delete task?",style:TextStyle(
+        content: const Text("Do you want to delete task?",style:TextStyle(
           fontSize: 22,
         ),),
         actions: [
@@ -235,11 +236,16 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                     if(mounted){
                       setState(() {});
                     }
-              }, child: const Text("yes")),
+              }, child: const Text("Yes",style: TextStyle(
+                fontSize: 20,
+                color: Colors.red
+              ),)),
               const Spacer(),
               TextButton(onPressed: (){
                 Navigator.pop(context);
-              }, child: const Text("NO")),
+              }, child: const Text("NO",style: TextStyle(
+                  fontSize: 20,
+              ),)),
 
             ],
           )
