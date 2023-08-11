@@ -10,7 +10,7 @@ class SummeryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  SizedBox(
-      width: 90,
+      width: 100,
       child: Card(
         elevation: 4,
         color: Colors.blueGrey[100],
