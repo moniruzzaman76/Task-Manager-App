@@ -6,6 +6,7 @@ import 'package:task_manager/data/service/network_coller.dart';
 import 'package:task_manager/data/service/network_response.dart';
 import 'package:task_manager/ui/screen/create_task_Screen.dart';
 import 'package:task_manager/ui/screen/update_profile_screen.dart';
+import 'package:task_manager/ui/screen/update_task_status_sheet.dart';
 import '../../widgets/list_tile_task.dart';
 import '../../widgets/summery_card.dart';
 import '../../widgets/user_profile_banar.dart';
@@ -187,7 +188,9 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                         _showDeleteDialog(index);
                         // deleteTask(_newTaskListModel.data![index].sId);
                       },
-                      onEditTap: () {},
+                      onEditTap: () {
+                        showStatusUpdateBottomSheet(_taskListModel.data![index]);
+                      },
                       color: Colors.green,
                     );
                   },
@@ -252,6 +255,18 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ],
       );
     });
+  }
+
+  void showStatusUpdateBottomSheet(TaskData task) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return UpdateTaskStatusSheet(task: task, onUpdate: () {
+          getNewTaskList();
+        });
+      },
+    );
   }
 
 }

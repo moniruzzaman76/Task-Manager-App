@@ -68,26 +68,31 @@ class _InProgressScreenState extends State<InProgressScreen> {
                 child: const UserProfileBanner(),
             ),
             Expanded(
-                child: Visibility(
-                  visible: !progressTaskInProgress,
-                  replacement: const Center(child: CircularProgressIndicator(),),
-                  child: ListView.separated(
-                    itemCount: _taskListModel.data?.length ?? 0,
-                    itemBuilder: (context,index){
-                       return  ListTileTask(
-                         data:_taskListModel.data![index],
-                         color: Colors.green,
-                         onDeleteTap: () { },
-                         onEditTap: () { },
-                       );
-                    },
-                    separatorBuilder: (context,index){
-                      return const Divider(
-                        height: 4,
-                        thickness: 1,
-                      );
-                    },
+                child: RefreshIndicator(
+                  onRefresh: ()async{
+                    await  getInProgressTaskList();
+                  },
+                  child: Visibility(
+                    visible: !progressTaskInProgress,
+                    replacement: const Center(child: CircularProgressIndicator(),),
+                    child: ListView.separated(
+                      itemCount: _taskListModel.data?.length ?? 0,
+                      itemBuilder: (context,index){
+                         return  ListTileTask(
+                           data:_taskListModel.data![index],
+                           color: Colors.green,
+                           onDeleteTap: () { },
+                           onEditTap: () { },
+                         );
+                      },
+                      separatorBuilder: (context,index){
+                        return const Divider(
+                          height: 4,
+                          thickness: 1,
+                        );
+                      },
 
+                    ),
                   ),
                 )
             )

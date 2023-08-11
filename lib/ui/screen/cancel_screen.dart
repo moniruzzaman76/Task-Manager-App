@@ -66,26 +66,31 @@ class _CancelScreenState extends State<CancelScreen> {
               child: const UserProfileBanner(),
             ),
             Expanded(
-                child: Visibility(
-                  visible: !cancelTaskInProgress,
-                  replacement: const Center(child: CircularProgressIndicator(),),
-                  child: ListView.separated(
-                    itemCount: _taskListModel.data?.length ?? 0,
-                    itemBuilder: (context,index){
-                      return  ListTileTask(
-                        data:_taskListModel.data![index],
-                        color: Colors.green,
-                        onDeleteTap: () { },
-                        onEditTap: () { },
-                      );
-                    },
-                    separatorBuilder: (context,index){
-                      return const Divider(
-                        height: 4,
-                        thickness: 1,
-                      );
-                    },
+                child: RefreshIndicator(
+                  onRefresh: ()async{
+                    await  getCancelTaskList();
+                  },
+                  child: Visibility(
+                    visible: !cancelTaskInProgress,
+                    replacement: const Center(child: CircularProgressIndicator(),),
+                    child: ListView.separated(
+                      itemCount: _taskListModel.data?.length ?? 0,
+                      itemBuilder: (context,index){
+                        return  ListTileTask(
+                          data:_taskListModel.data![index],
+                          color: Colors.green,
+                          onDeleteTap: () { },
+                          onEditTap: () { },
+                        );
+                      },
+                      separatorBuilder: (context,index){
+                        return const Divider(
+                          height: 4,
+                          thickness: 1,
+                        );
+                      },
 
+                    ),
                   ),
                 )
             )
