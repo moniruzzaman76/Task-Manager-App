@@ -17,7 +17,7 @@ class UpdateTaskStatusSheet extends StatefulWidget {
 }
 
 class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
-  List<String> taskStatusList = ['New', 'Completed', 'Canceled', 'Progress'];
+  List<String> taskStatusList = ['New', 'Completed', 'Cancelled', 'Progress'];
   late String _selectedTask;
   bool updateTaskInProgress = false;
 

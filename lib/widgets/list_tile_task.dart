@@ -16,11 +16,20 @@ class ListTileTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(data.title ?? ""),
+      title: Text(data.title ?? "",style: const TextStyle(
+        fontSize: 22,
+        color: Colors.black,
+        fontWeight: FontWeight.w500
+      ),),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data.description ?? ""),
+          const SizedBox(height: 6,),
+          Text(data.description ?? "",style: const TextStyle(
+              fontSize: 17,
+              color: Colors.black,
+            letterSpacing: .5,
+          ),),
           const SizedBox(
             height: 15,
           ),

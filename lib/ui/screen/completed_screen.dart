@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/model/task_list_model.dart';
 import 'package:task_manager/ui/screen/update_profile_screen.dart';
+import 'package:task_manager/ui/screen/update_task_status_sheet.dart';
 import '../../data/Utils/urls.dart';
 import '../../data/service/network_coller.dart';
 import '../../data/service/network_response.dart';
@@ -52,6 +53,24 @@ class _CompletedScreenState extends State<CompletedScreen> {
       }
     }
   }
+
+
+  Future<void> deleteTask(taskId) async {
+    final NetworkResponse response =
+    await NetWorkCaller().getRequest(Urls.deleteTask(taskId));
+    if (response.isSuccess) {
+
+      _taskListModel.data?.removeWhere((element) => element.sId == taskId);
+      // getNewTaskList();
+      // getSummeryCount();
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red, content: Text("Task delete failed!")));
+      }
+    }
+  }
+
   
   
   
@@ -82,8 +101,12 @@ class _CompletedScreenState extends State<CompletedScreen> {
                       itemCount: _taskListModel.data?.length ?? 0,
                       itemBuilder: (context,index){
                         return  ListTileTask(
-                          onDeleteTap: (){},
-                          onEditTap: (){},
+                          onDeleteTap: (){
+                            _showDeleteDialog(index);
+                          },
+                          onEditTap: (){
+                            showStatusUpdateBottomSheet(_taskListModel.data![index]);
+                          },
                           data: _taskListModel.data![index],
                           color: Colors.green,);
                       },
@@ -103,4 +126,57 @@ class _CompletedScreenState extends State<CompletedScreen> {
       ),
     );
   }
+
+
+  void _showDeleteDialog(index){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Center(
+            child: Text("Delete!",style: TextStyle(color:Colors.red),)),
+        content: const Text("Do you want to delete task?",style:TextStyle(
+          fontSize: 22,
+        ),),
+        actions: [
+          Row(
+            children: [
+              TextButton(
+                  onPressed: (){
+                    getCompletedTaskList();
+                    deleteTask(_taskListModel.data![index].sId);
+                    Navigator.pop(context);
+                    if(mounted){
+                      setState(() {});
+                    }
+                  }, child: const Text("Yes",style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.red
+              ),)),
+              const Spacer(),
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: const Text("NO",style: TextStyle(
+                fontSize: 20,
+              ),)),
+
+            ],
+          )
+        ],
+      );
+    });
+  }
+
+
+  void showStatusUpdateBottomSheet(TaskData task) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return UpdateTaskStatusSheet(task: task, onUpdate: () {
+          getCompletedTaskList();
+        });
+      },
+    );
+  }
+
+
 }

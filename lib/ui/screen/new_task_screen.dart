@@ -191,7 +191,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                       onEditTap: () {
                         showStatusUpdateBottomSheet(_taskListModel.data![index]);
                       },
-                      color: Colors.green,
+                      color: Colors.lightBlue,
                     );
                   },
                   separatorBuilder: (context, index) {

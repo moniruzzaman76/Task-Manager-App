@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screen/update_profile_screen.dart';
+import 'package:task_manager/ui/screen/update_task_status_sheet.dart';
 import '../../data/Utils/urls.dart';
 import '../../data/model/task_list_model.dart';
 import '../../data/service/network_coller.dart';
@@ -54,6 +55,23 @@ class _InProgressScreenState extends State<InProgressScreen> {
   }
 
 
+  Future<void> deleteTask(taskId) async {
+    final NetworkResponse response =
+    await NetWorkCaller().getRequest(Urls.deleteTask(taskId));
+    if (response.isSuccess) {
+
+      _taskListModel.data?.removeWhere((element) => element.sId == taskId);
+      // getNewTaskList();
+      // getSummeryCount();
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red, content: Text("Task delete failed!")));
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,9 +98,13 @@ class _InProgressScreenState extends State<InProgressScreen> {
                       itemBuilder: (context,index){
                          return  ListTileTask(
                            data:_taskListModel.data![index],
-                           color: Colors.green,
-                           onDeleteTap: () { },
-                           onEditTap: () { },
+                           color: Colors.pink,
+                           onDeleteTap: () {
+                             _showDeleteDialog(index);
+                           },
+                           onEditTap: () {
+                             showStatusUpdateBottomSheet(_taskListModel.data![index]);
+                           },
                          );
                       },
                       separatorBuilder: (context,index){
@@ -101,4 +123,56 @@ class _InProgressScreenState extends State<InProgressScreen> {
       ),
     );
   }
+
+  void _showDeleteDialog(index){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Center(
+            child: Text("Delete!",style: TextStyle(color:Colors.red),)),
+        content: const Text("Do you want to delete task?",style:TextStyle(
+          fontSize: 22,
+        ),),
+        actions: [
+          Row(
+            children: [
+              TextButton(
+                  onPressed: (){
+                    getInProgressTaskList();
+                    deleteTask(_taskListModel.data![index].sId);
+                    Navigator.pop(context);
+                    if(mounted){
+                      setState(() {});
+                    }
+                  }, child: const Text("Yes",style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.red
+              ),)),
+              const Spacer(),
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: const Text("NO",style: TextStyle(
+                fontSize: 20,
+              ),)),
+
+            ],
+          )
+        ],
+      );
+    });
+  }
+
+
+  void showStatusUpdateBottomSheet(TaskData task) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return UpdateTaskStatusSheet(task: task, onUpdate: () {
+          getInProgressTaskList();
+        });
+      },
+    );
+  }
+
+
 }

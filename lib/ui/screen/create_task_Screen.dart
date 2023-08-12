@@ -74,7 +74,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
               TextFormField(
                 controller: _subjectEditingController,
                 decoration: const InputDecoration(
-                  hintText: "Enter your Subject",
+                  hintText: "Enter your Title",
                   prefixIcon: Icon(Icons.title_outlined),
                 ),
               ),
@@ -83,10 +83,9 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
               TextFormField(
                 controller: _descriptionEditingController,
-                maxLines: 6,
+                maxLines: 8,
                 decoration: const InputDecoration(
-                  hintText: "Description",
-                  prefixIcon: Icon(Icons.description_outlined),
+                  hintText: "Enter your Description",
                 ),
               ),
 
