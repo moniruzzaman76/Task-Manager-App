@@ -1,7 +1,6 @@
 # task_manager
 
 A new Flutter project.
-
 ![image](https://github.com/moniruzzaman76/Task-Manager-App/assets/107347380/37692f36-6321-4a64-8519-a9668a5ac00e)
 ![image](https://github.com/moniruzzaman76/Task-Manager-App/assets/107347380/aabb58ba-aacd-4dc5-aeb6-f661a52e0c33)
 ![image](https://github.com/moniruzzaman76/Task-Manager-App/assets/107347380/10778a70-2557-4eeb-8801-bafaca4245e0)
